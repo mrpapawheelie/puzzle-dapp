@@ -1,5 +1,6 @@
 import create from "zustand";
 import scaffoldConfig from "~~/scaffold.config";
+import { Square } from "~~/utils/puzzle/puzzleUtils";
 import { ChainWithAttributes } from "~~/utils/scaffold-eth";
 
 /**
@@ -13,14 +14,30 @@ import { ChainWithAttributes } from "~~/utils/scaffold-eth";
 
 type GlobalState = {
   nativeCurrencyPrice: number;
-  setNativeCurrencyPrice: (newNativeCurrencyPriceState: number) => void;
+  setNativeCurrencyPrice: (price: number) => void;
   targetNetwork: ChainWithAttributes;
-  setTargetNetwork: (newTargetNetwork: ChainWithAttributes) => void;
+  setTargetNetwork: (network: ChainWithAttributes) => void;
+  moves: number;
+  setMoves: (moves: number) => void;
+  puzzleStatus: "notStarted" | "inProgress" | "completed";
+  setPuzzleStatus: (status: "notStarted" | "inProgress" | "completed") => void;
+  squares: Square[];
+  setSquares: (squares: Square[]) => void;
+  isSolvable: boolean;
+  setIsSolvable: (solvable: boolean) => void;
 };
 
 export const useGlobalState = create<GlobalState>(set => ({
   nativeCurrencyPrice: 0,
-  setNativeCurrencyPrice: (newValue: number): void => set(() => ({ nativeCurrencyPrice: newValue })),
+  setNativeCurrencyPrice: price => set({ nativeCurrencyPrice: price }),
   targetNetwork: scaffoldConfig.targetNetworks[0],
-  setTargetNetwork: (newTargetNetwork: ChainWithAttributes) => set(() => ({ targetNetwork: newTargetNetwork })),
+  setTargetNetwork: network => set({ targetNetwork: network }),
+  moves: 0,
+  setMoves: moves => set({ moves: moves }),
+  puzzleStatus: "notStarted",
+  setPuzzleStatus: status => set({ puzzleStatus: status }),
+  squares: [],
+  setSquares: squares => set({ squares }),
+  isSolvable: true,
+  setIsSolvable: solvable => set({ isSolvable: solvable }),
 }));

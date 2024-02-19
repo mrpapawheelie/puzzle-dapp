@@ -1,0 +1,32 @@
+{
+  "transactions": [
+    {
+      "hash": "0xcefb1fb76f95ec54ea5308e11487f45b7198767230d7b6b651577520ee1ae6e6",
+      "transactionType": "CREATE",
+      "contractName": "Puzzle",
+      "contractAddress": "0xCBA9d8b99c89F0F6ae32Ebc226Fd7EC1b2ABCCE2",
+      "function": null,
+      "arguments": null,
+      "transaction": {
+        "type": "0x00",
+        "from": "0xe2cf827446cd1786e6376a53a469a17cbb2878b5",
+        "gas": "0x1e644",
+        "value": "0x0",
+        "data": "0x608060405234801561001057600080fd5b5060c48061001f6000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c8063ab70d89014602d575b600080fd5b603c60383660046076565b603e565b005b60405181815233907f83e754ab542c122478d6306b0372ebca0b629088001075ccaab1858132e704119060200160405180910390a250565b600060208284031215608757600080fd5b503591905056fea2646970667358221220da2897cba33e73b109682b3a73e8f63a90ff2230cc661a84c51d3ad7f5043ddd64736f6c63430008170033",
+        "nonce": "0x0"
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [
+    "0xcefb1fb76f95ec54ea5308e11487f45b7198767230d7b6b651577520ee1ae6e6"
+  ],
+  "returns": {},
+  "timestamp": 1708331974,
+  "chain": 11155111,
+  "multi": false,
+  "commit": "ff505a3"
+}

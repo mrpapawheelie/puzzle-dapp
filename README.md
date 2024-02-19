@@ -1,3 +1,16 @@
+# 15-Puzzle Game
+
+The 15-Puzzle game is a classic sliding puzzle that challenges players to arrange numbered tiles in sequential order within a 4x4 grid, with one tile missing to allow for movement. This project is a modern web implementation of the game, utilizing Scaffold-ETH2.
+
+## Features
+
+- **Interactive Puzzle Grid**: A dynamic and responsive grid that allows players to slide tiles by clicking.
+- **State Management**: Utilizes Scaffold-ETH2's Zustand implemenation for efficient and centralized state management across components.
+- **Game Status Tracking**: Keeps track of moves and provides visual feedback when the puzzle is solved.
+- **Write Scores to the Blockchain**: Option to record your score when solving a puzzle.
+
+Follow the below instructions to test it locally.
+
 # 🏗 Scaffold-ETH 2
 
 🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
