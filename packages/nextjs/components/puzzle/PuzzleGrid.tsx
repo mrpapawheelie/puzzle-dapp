@@ -1,7 +1,5 @@
 import React from "react";
-import { PuzzleGridProps } from "~~/types/utils";
-
-// Importing the type definition for props.
+import { PuzzleGridProps } from "~~/utils/puzzle/puzzleUtils";
 
 // The PuzzleGrid component displays the grid of puzzle squares.
 const PuzzleGrid: React.FC<PuzzleGridProps> = ({ squares, onSquareClick }) => {
