@@ -19,10 +19,10 @@ type GlobalState = {
   setTargetNetwork: (network: ChainWithAttributes) => void;
   moves: number;
   setMoves: (moves: number) => void;
-  puzzleStatus: "notStarted" | "inProgress" | "completed";
-  setPuzzleStatus: (status: "notStarted" | "inProgress" | "completed") => void;
   squares: Square[];
   setSquares: (squares: Square[]) => void;
+  puzzleStatus: "notStarted" | "inProgress" | "completed";
+  setPuzzleStatus: (status: "notStarted" | "inProgress" | "completed") => void;
   isSolvable: boolean;
   setIsSolvable: (solvable: boolean) => void;
 };

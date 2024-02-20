@@ -1,83 +1,67 @@
+// Puzzle Grid Props
 export type Square = {
-  id: string;
-  value: number;
-  isEmpty: boolean;
-  isCorrectPosition: boolean;
+  id: string; // Unique identifier for the square.
+  value: number; // Numeric value of the square, 0 for the empty square.
+  isEmpty: boolean; // Flag indicating whether the square is the empty one.
+  isCorrectPosition: boolean; // Flag indicating if the square is in its correct position based on its value.
 };
 
-/**
- * Generates an array of initial squares.
- * Each square has an id, value, correctPosition, and isEmpty property.
- * The array contains 15 squares with values from 1 to 15, and one empty square with value 0.
- * @returns {Square[]} The array of initial squares.
- */
+export type PuzzleGridProps = {
+  squares: Square[];
+  onSquareClick: (squareId: string) => void;
+};
+
+// Generates an initial ordered grid of squares for a sliding puzzle game.
 export const generateInitialSquares = (): Square[] =>
+  // Create an array of 15 filled squares with sequential values and one empty square.
   Array.from({ length: 15 }, (_, index) => ({
-    id: `square-${index + 1}`,
-    value: index + 1,
-    isCorrectPosition: true,
-    isEmpty: false,
+    id: `square-${index + 1}`, // Assign a unique ID.
+    value: index + 1, // Assign a value from 1 to 15.
+    isCorrectPosition: true, // Initially, all squares are in the correct position.
+    isEmpty: false, // These are filled squares, not the empty one.
   })).concat([
     {
-      id: "square-16",
-      value: 0,
-      isCorrectPosition: true,
-      isEmpty: true,
+      id: "square-16", // ID for the empty square.
+      value: 0, // Empty square has a value of 0.
+      isCorrectPosition: true, // The empty square is also considered in the correct position initially.
+      isEmpty: true, // This is the empty square.
     },
   ]);
 
-/**
- * Shuffles an array of squares using the Fisher-Yates shuffle algorithm.
- *
- * @param squares - The array of squares to be shuffled.
- * @returns The shuffled array of squares.
- */
+// Shuffles the square array to start the game with a random configuration.
 export const shuffle = (squares: Square[]): Square[] => {
-  // Make a copy of the squares array to avoid mutating the original array
-  const newSquares: Square[] = [...squares];
+  const newSquares: Square[] = [...squares]; // Clone the array to avoid mutating the original.
 
-  /**
-   * The current index of the squares array.
-   */
-  let currentIndex = newSquares.length,
-    temporaryValue,
-    /**
-     * Represents a random index.
-     */
-    randomIndex;
+  let currentIndex = newSquares.length; // Start from the last element.
+  let temporaryValue, // Temporary variable to hold the value of the square being swapped.
+    randomIndex; // Index of the square to swap with.
+
+  // Iterate over the array and swap each square with a square at a random index.
   while (--currentIndex > 0) {
-    // Pick a remaining element
-    randomIndex = Math.floor(Math.random() * (currentIndex + 1));
-    // Swap it with the current element
+    randomIndex = Math.floor(Math.random() * (currentIndex + 1)); // Choose a random index.
+    // Swap the current square with the randomly chosen square.
     temporaryValue = newSquares[currentIndex];
     newSquares[currentIndex] = newSquares[randomIndex];
     newSquares[randomIndex] = temporaryValue;
   }
-  return newSquares; // Return the shuffled array
+  return newSquares; // Return the shuffled array.
 };
 
-/**
- * Checks if a given puzzle configuration is solvable.
- *
- * @param squares - An array of Square objects representing the puzzle configuration.
- * @returns A boolean indicating whether the puzzle is solvable or not.
- */
+// Determines if a puzzle configuration is solvable to ensure a fair game.
 export const isSolvable = (squares: Square[]): boolean => {
-  let parity = 0;
-  const gridWidth = Math.sqrt(squares.length);
-  let row = 0; // the current row we are on
-  let blankRow = 0; // the row with the blank square
+  let parity = 0; // Parity count to determine solvability.
+  const gridWidth = Math.sqrt(squares.length); // Calculate the width of the square grid.
+  let row = 0, // Row counter.
+    blankRow = 0; // Row where the empty square is located.
 
+  // Iterate through the squares to calculate the parity.
   for (let i = 0; i < squares.length; i++) {
-    if (i % gridWidth === 0) {
-      // advance to next row
-      row++;
-    }
+    if (i % gridWidth === 0) row++; // Move to the next row after each grid width.
     if (squares[i].isEmpty) {
-      // the blank square
-      blankRow = row; // save the row on which encountered
-      continue;
+      blankRow = row; // Note the row containing the empty square.
+      continue; // Skip the empty square.
     }
+    // Count inversions for parity calculation.
     for (let j = i + 1; j < squares.length; j++) {
       if (squares[i].value > squares[j].value && squares[j].value !== 0) {
         parity++;
@@ -85,102 +69,55 @@ export const isSolvable = (squares: Square[]): boolean => {
     }
   }
 
+  // Solvability rules vary based on the grid width (odd or even).
   if (gridWidth % 2 === 0) {
-    // even grid
-    if (blankRow % 2 === 0) {
-      // blank on odd row; counting from bottom
-      return parity % 2 === 0;
-    } else {
-      // blank on even row; counting from bottom
-      return parity % 2 !== 0;
-    }
+    // For even grid widths, the position of the empty square matters.
+    return blankRow % 2 === 0 ? parity % 2 === 0 : parity % 2 !== 0;
   } else {
-    // odd grid
+    // For odd grid widths, only the parity count matters.
     return parity % 2 === 0;
   }
 };
 
-/**
- * Swaps two elements in an array of squares.
- *
- * @param squares - The array of squares.
- * @param index1 - The index of the first element to swap.
- * @param index2 - The index of the second element to swap.
- * @returns A new array with the elements swapped.
- */
+// Swaps two squares in the grid, used for moving squares in the game.
 export const swap = (squares: Square[], index1: number, index2: number): Square[] => {
-  // Swap logic
-  const newSquares = [...squares];
+  const newSquares = [...squares]; // Clone the array to avoid mutating the original.
+  // Perform the swap.
   const temp = newSquares[index1];
   newSquares[index1] = newSquares[index2];
   newSquares[index2] = temp;
-  return newSquares;
+  return newSquares; // Return the array with swapped squares.
 };
 
-/**
- * Checks if two indices in a grid are neighbors.
- * @param index1 - The first index.
- * @param index2 - The second index.
- * @param gridSize - The size of the grid. Defaults to 4.
- * @returns True if the indices are neighbors, false otherwise.
- */
+// Determines if two squares are adjacent and thus swappable.
 export const isNeighbour = (index1: number, index2: number, gridSize = 4): boolean => {
-  const row1 = Math.floor(index1 / gridSize);
-  const col1 = index1 % gridSize;
-  const row2 = Math.floor(index2 / gridSize);
-  const col2 = index2 % gridSize;
+  const row1 = Math.floor(index1 / gridSize); // Row of the first square.
+  const col1 = index1 % gridSize; // Column of the first square.
+  const row2 = Math.floor(index2 / gridSize); // Row of the second square.
+  const col2 = index2 % gridSize; // Column of the second square.
 
-  // Check if squares are in the same row and adjacent columns, or in the same column and adjacent rows
+  // Check if they are neighbors by being next to each other horizontally or vertically.
   return (row1 === row2 && Math.abs(col1 - col2) === 1) || (col1 === col2 && Math.abs(row1 - row2) === 1);
 };
 
-/**
- * Calculates the move based on the number of moves and time left.
- * @param moves The number of moves made.
- * @param timeLeft The time left in milliseconds.
- * @returns The calculated move.
- */
-export const calculateMove = (moves: number, timeLeft: number): number => {
-  // Scoring logic
-  const timeBonus = Math.max(0, timeLeft);
-  const movePenalty = Math.max(0, moves - 100);
-  return Math.round(1000 + timeBonus - movePenalty);
-};
-
-/**
- * Checks if the puzzle is solved.
- * @param squares - The array of squares representing the puzzle.
- * @returns A boolean indicating whether the puzzle is solved or not.
- */
+// Checks if the puzzle has been solved by verifying the order and position of squares.
 export const isSolved = (squares: Square[]): boolean => {
-  // Check if all numbered squares are in ascending order
   for (let i = 0; i < squares.length - 1; i++) {
-    if (squares[i].value !== i + 1) return false;
+    if (squares[i].value !== i + 1) return false; // Check if each square is in its correct position.
   }
-  // Check if the last square is the empty square
-  return squares[squares.length - 1].isEmpty;
+  return squares[squares.length - 1].isEmpty; // Ensure the last square is the empty square.
 };
 
-/**
- * Formats the given time in seconds into a string representation of minutes and seconds.
- * @param timeInSeconds - The time in seconds to format.
- * @returns The formatted time string in the format "MM:SS".
- */
-export const formatTime = (timeInSeconds: number): string => {
-  const minutes = Math.floor(timeInSeconds / 60);
-  const seconds = timeInSeconds % 60;
-  const paddedMinutes = minutes.toString().padStart(2, "0");
-  const paddedSeconds = seconds.toString().padStart(2, "0");
-  return `${paddedMinutes}:${paddedSeconds}`;
-};
-
+// Verifies if a square is in its correct position based on its value.
 export const isCorrectPosition = (square: Square, index: number): boolean => {
-  return square.value === index + 1;
+  return square.value === index + 1; // True if the value matches the expected position (index + 1).
 };
 
+// Updates each square's `isCorrectPosition` property based on its current position.
 export const updateSquaresWithCorrectPosition = (squares: Square[]): Square[] => {
   return squares.map((square, index) => ({
     ...square,
+    // Mark square as in correct position if its value matches the index + 1, or if it's the empty square in the last position.
     isCorrectPosition: square.value === index + 1 || (square.isEmpty && index === squares.length - 1),
   }));
 };

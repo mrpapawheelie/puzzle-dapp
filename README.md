@@ -1,4 +1,4 @@
-# 15-Puzzle Game
+# 15-Puzzle Game using Scaffold-ETH2
 
 The 15-Puzzle game is a classic sliding puzzle that challenges players to arrange numbered tiles in sequential order within a 4x4 grid, with one tile missing to allow for movement. This project is a modern web implementation of the game, utilizing Scaffold-ETH2.
 
@@ -9,7 +9,55 @@ The 15-Puzzle game is a classic sliding puzzle that challenges players to arrang
 - **Game Status Tracking**: Keeps track of moves and provides visual feedback when the puzzle is solved.
 - **Write Scores to the Blockchain**: Option to record your score when solving a puzzle.
 
-Follow the below instructions to test it locally.
+## Puzzle Game Structure
+
+The puzzle game is structured into several key components and utility functions, each serving a specific purpose in the functionality and presentation of the game. Below is an overview of where to find these files and what each file controls:
+
+### Components
+
+- **Puzzle Components**: Located at `/packages/nextjs/components/puzzle`, these are the main React components that make up the user interface of the puzzle game.
+  - `EndPuzzle.tsx`: This component is displayed when the puzzle is completed. It allows the user to end the game and can be customized for different end-game actions.
+  - `StartPuzzle.tsx`: This component provides a button to start or restart the puzzle game. It initializes the game state and shuffles the puzzle squares to begin gameplay.
+  - `PuzzleGrid.tsx`: This component renders the grid layout of the puzzle, displaying each square and handling click events to move squares within the grid.
+  - `Puzzle.tsx`: The main container component that orchestrates the puzzle game, managing state and coordinating interactions between the other components.
+
+### State Management
+
+- **Zustand Global Store**: Located at `/packages/nextjs/services/store/store.ts`, this file defines the global state management for the puzzle game using Zustand. It includes state variables for the squares, move count, and puzzle status, along with setters for updating these states.
+
+### Types
+
+- **Grid Prop Types and Square[]**: Located at `/packages/nextjs/utils/puzzle/puzzleUtils.ts`, this file contains TypeScript type definitions related to the puzzle game, such as the properties for each puzzle square and the props for the `PuzzleGrid` component.
+
+### Game Logic
+
+- **Puzzle Utilities**: Located at `/packages/nextjs/utils/puzzle/puzzleUtils.ts`, this file includes essential utility functions for the puzzle game logic, such as generating the initial squares, shuffling the squares, checking solvability, and determining when the puzzle is solved.
+
+### Modifying the Game
+
+Each of these files controls distinct aspects of the puzzle game, making it easy to modify specific parts:
+- To alter the appearance or functionality of the UI components, modify the corresponding files in the `components/puzzle` directory.
+- To change how the game state is managed or introduce new state variables, update the `store.ts` file.
+- For custom types or to extend the properties of puzzle squares, adjust the types in `utils.ts`.
+- To adjust the game's logic, such as the shuffle algorithm or the criteria for a puzzle being solved, modify the functions in `puzzleUtils.ts`.
+
+This structure is designed to keep the game modular and maintainable, allowing for easy updates and modifications.
+
+## Upcoming Features and Solutions
+
+- **Anti-Cheat Mechanisms**: Introduce server-side validation techniques to prevent cheating, enhancing game integrity and fairness.
+- **Player Management**: Develop functionalities to assign unique puzzle IDs (`bytes32 puzzleId`) to players, map these IDs to player profiles, and retrieve player statistics, thereby personalizing the gaming experience.
+- **Gameplay Tracking**: Implement methods to monitor and record gameplay activities, ensuring a comprehensive understanding of player engagement and game dynamics.
+- **Subgraph Integration**: Incorporate 'Ponder' as a layer to enable subgraph functionalities, facilitating efficient data indexing and querying capabilities for enhanced analytics.
+- **API Documentation**: Provide comprehensive API documentation to enable external developers to efficiently interact with 'Ponder', ensuring ease of access to game data.
+- **Social Sharing Features**: Enable players to share their rankings, individual game statistics, and puzzle achievements, fostering community engagement
+- **ERC721 Integration**: Introduce a Non-Fungible Token (NFT) requirement that players must possess to qualify for reward tokens, adding a layer of value and exclusivity to game participation.
+- **ERC1155 Implementation**: Create a fungible NFT voucher system that players can mint upon completing puzzles, introducing a tangible reward mechanism.
+- **Enhanced Randomness with Chainlink VRF**: Utilize Chainlink's Verifiable Random Function (VRF) to introduce unpredictability in the rarity of the burnable NFT vouchers, ensuring fairness and transparency.
+- **Strategic Randomness**: Implement a logic that biases randomness in favor of ERC721 NFT holders and players scoring below 150, promoting inclusivity and balance in gameplay rewards.
+- **ERC20 Token Rewards**: Introduce an in-game ERC20 token that players can earn and redeem by burning their ERC1155 NFTs, adding a layer of reward strategy.
+- **Voucher Redemption**: Add a `burnVoucher` function to facilitate the burning of ERC1155 vouchers and redemption of earned tokens, which are then held in an escrow contract for added security.
+- **Secure Withdrawals**: Implement a `pullPayment` function that allows players to securely withdraw their earned tokens post-ERC1155 voucher burn, ensuring a trustworthy reward collection process.
 
 # 🏗 Scaffold-ETH 2
 
