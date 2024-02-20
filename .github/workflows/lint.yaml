@@ -30,6 +30,11 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Install Foundry
+        run: |
+          curl -L https://foundry.paradigm.xyz | bash
+          echo "$HOME/.foundry/bin" >> $GITHUB_PATH
+
       - name: Run foundry node, deploy contracts (& generate contracts typescript output)
         run: yarn chain & yarn deploy
 
